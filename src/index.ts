@@ -134,11 +134,11 @@ export class mcGenericMethods {
 
     await axios // Making a GET request using axios and requesting information from the API
       .post(sfmcAuthServiceApiUrl, postBody, { headers: headers })
-      .then((response) => {
+      .then((response: any) => {
         // If the GET request is successful, this block is executed
         result = response; // The response of the API call is passed on to the next block
       })
-      .catch((err) => {
+      .catch((err: any) => {
         console.log(err); // Error handler
       });
     return result; // The contest data is returned
