@@ -1,6 +1,6 @@
 // module.exports exports the function getContests as a promise and exposes it as a module.
 // we can import an exported module by using require().
-export class mcGenericMethods {
+export default class mcGenericMethods {
   public async getOAuthAccessToken() {
     const axios = require("axios"); // Importing the Axios module to make API requests
     let result: any;

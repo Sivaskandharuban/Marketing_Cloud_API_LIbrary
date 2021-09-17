@@ -1,12 +1,13 @@
 {
   "name": "mc_generic_methods",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "type": "module",
   "dependencies": {
     "axios": "^0.21.4",
     "require": "^2.4.20"
   },
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "lib/**/*"
   ],
@@ -16,17 +17,22 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sivaskandharuban/Marketing_Cloud_API_LIbrary.git"
   },
-  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Sivaskandharuban/Marketing_Cloud_API_LIbrary/issues"
   },
   "homepage": "https://github.com/Sivaskandharuban/Marketing_Cloud_API_LIbrary#readme",
-  "description": ""
+  "description": "",
+  "keywords": [
+    "Marketingcloud",
+    "salesforce_marketing_cloud"
+  ],
+  "author": "Sivaskandharuban"
 }
