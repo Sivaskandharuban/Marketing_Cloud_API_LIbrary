@@ -1,6 +1,6 @@
 {
   "name": "mc_generic_methods",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "type": "module",
   "dependencies": {
     "axios": "^0.21.4",
