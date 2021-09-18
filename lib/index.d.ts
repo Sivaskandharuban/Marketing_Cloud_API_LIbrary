@@ -1,3 +1,3 @@
 export default class mcGenericMethods {
-    getOAuthAccessToken(): Promise<any>;
+    getOAuthAccessToken(clientId: any, clientSecret: any, grantType: string, code: any, redirect_uri: any): Promise<any>;
 }
