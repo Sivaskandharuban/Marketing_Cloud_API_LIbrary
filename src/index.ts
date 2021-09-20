@@ -76,7 +76,7 @@ export default class mcGenericMethods {
             refreshToken: response.data.refresh_token,
             oauthToken: response.data.access_token,
           };
-          resolve(customResponse);
+          return resolve(customResponse);
         })
         .catch((error: any) => {
           let errorMsg = "Error getting refresh Access Token.";
@@ -87,7 +87,7 @@ export default class mcGenericMethods {
             "\nResponse data: " + error.response
               ? JSON.stringify(error.response.data)
               : "<None>";
-          reject(errorMsg);
+          return reject(errorMsg);
         });
     });
   }
