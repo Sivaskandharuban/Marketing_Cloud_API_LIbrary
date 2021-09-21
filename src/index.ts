@@ -160,7 +160,7 @@ export default class mcGenericMethods {
                 let sendresponse = {
                   domainName: domainName,
                 };
-                resolve(sendresponse);
+                return resolve(sendresponse);
               }
             }
           );
@@ -174,7 +174,7 @@ export default class mcGenericMethods {
             "\nResponse data: " + error.response.data
               ? JSON.stringify(error.response.data)
               : "<None>";
-          reject(errorMsg);
+          return reject(errorMsg);
         });
     });
   }
