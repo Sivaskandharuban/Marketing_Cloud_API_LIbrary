@@ -1,6 +1,8 @@
 // module.exports exports the function getContests as a promise and exposes it as a module.
 // we can import an exported module by using require().
-const axios = require("axios");
+import axios, { AxiosRequestConfig } from "axios";
+const xml2js = require("xml2js");
+
 export default class mcGenericMethods {
   public async getOAuthAccessToken(
     clientId: any,
@@ -88,6 +90,91 @@ export default class mcGenericMethods {
               ? JSON.stringify(error.response.data)
               : "<None>";
           return reject(errorMsg);
+        });
+    });
+  }
+
+  //To get senderdomainname
+  public async getSenderDomain(mcVals: any) {
+    let FiltersoapMessage: string;
+
+    if (mcVals.senderProfileID != undefined && mcVals.senderProfileID != "") {
+      FiltersoapMessage =
+        '<?xml version="1.0" encoding="UTF-8"?>' +
+        '<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">' +
+        "    <s:Header>" +
+        '        <a:Action s:mustUnderstand="1">Retrieve</a:Action>' +
+        '        <a:To s:mustUnderstand="1">' +
+        mcVals.soapInstance +
+        "Service.asmx" +
+        "</a:To>" +
+        '        <fueloauth xmlns="http://exacttarget.com">' +
+        mcVals.oauthToken +
+        "</fueloauth>" +
+        "    </s:Header>" +
+        '    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+        '        <RetrieveRequestMsg xmlns="http://exacttarget.com/wsdl/partnerAPI">' +
+        "            <RetrieveRequest>" +
+        "                <ObjectType>SenderProfile</ObjectType>" +
+        "      <Properties>ObjectID</Properties>" +
+        "        <Properties>Name</Properties>" +
+        "        <Properties>CustomerKey</Properties>" +
+        '<Filter xsi:type="SimpleFilterPart">' +
+        "<Property>ObjectID</Property>" +
+        "<SimpleOperator>equals</SimpleOperator>" +
+        "<Value>" +
+        mcVals.senderProfileID +
+        "</Value>" +
+        "</Filter>" +
+        "            </RetrieveRequest>" +
+        "        </RetrieveRequestMsg>" +
+        "    </s:Body>" +
+        "</s:Envelope>";
+    }
+    return new Promise<any>(async (resolve, reject) => {
+      const configs: AxiosRequestConfig = {
+        method: "post",
+        url: "" + mcVals.soapInstance + "Service.asmx" + "",
+        headers: {
+          "Content-Type": "text/xml",
+        },
+        data: FiltersoapMessage,
+      };
+      await axios(configs)
+        .then(function (response: any) {
+          let senderProfileResponse = response.data;
+          var senderDomainData = "";
+          var parser = new xml2js.Parser();
+          parser.parseString(
+            senderProfileResponse,
+            function (err: any, result: any) {
+              senderDomainData =
+                result["soap:Envelope"]["soap:Body"][0][
+                  "RetrieveResponseMsg"
+                ][0]["Results"];
+              if (senderDomainData != undefined) {
+                let domainName =
+                  result["soap:Envelope"]["soap:Body"][0][
+                    "RetrieveResponseMsg"
+                  ][0]["Results"][0]["Name"][0];
+                let sendresponse = {
+                  domainName: domainName,
+                };
+                resolve(sendresponse);
+              }
+            }
+          );
+        })
+        .catch(function (error: any) {
+          let errorMsg = "Error getting the sender profile ID's domain";
+          errorMsg += "\nMessage: " + error.message;
+          errorMsg +=
+            "\nStatus: " + error.response ? error.response.status : "<None>";
+          errorMsg +=
+            "\nResponse data: " + error.response.data
+              ? JSON.stringify(error.response.data)
+              : "<None>";
+          reject(errorMsg);
         });
     });
   }
