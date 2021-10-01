@@ -9,7 +9,8 @@ export default class mcGenericMethods {
     clientSecret: any,
     grantType: string,
     code: any,
-    redirect_uri: any
+    redirect_uri: any,
+    tssd : any
   ) {
     // Importing the Axios module to make API requests
     let result: any;
@@ -36,7 +37,7 @@ export default class mcGenericMethods {
     }
 
     let sfmcAuthServiceApiUrl =
-      "https://mcj6cy1x9m-t5h5tz0bfsyqj38ky.auth.marketingcloudapis.com/v2/token";
+      "https://"+tssd+".auth.marketingcloudapis.com/v2/token";
 
     await axios // Making a GET request using axios and requesting information from the API
       .post(sfmcAuthServiceApiUrl, postBody, { headers: headers })
